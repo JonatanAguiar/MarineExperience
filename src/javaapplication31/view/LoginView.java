@@ -5,6 +5,9 @@
  */
 package javaapplication31.view;
 
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javaapplication31.dao.DataSource;
 import javaapplication31.dao.UsuarioDao;
 import javaapplication31.model.Usuario;
@@ -146,29 +149,14 @@ public class LoginView extends javax.swing.JFrame {
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
         //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
         JXMapViewer mapViewer = new JXMapViewer();
-
-        // Create a TileFactoryInfo for OpenStreetMap
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-        mapViewer.setTileFactory(tileFactory);
-
-        // Use 8 threads in parallel to load the tiles
-        tileFactory.setThreadPoolSize(8);
-
-        // Set the focus
-        GeoPosition litoral = new GeoPosition(-29,-50);
-
-        // Set the focus
-        mapViewer.setZoom(7);
-        mapViewer.setAddressLocation(litoral);
-
-        // Add interactions
-        MouseInputListener mia = new PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(mia);
-        mapViewer.addMouseMotionListener(mia);
-        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         
-        autenticacao(mapViewer);
+        
+        
+        try {
+            autenticacao(mapViewer);
+        } catch (ParseException ex) {
+            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jBEntrarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -180,7 +168,7 @@ public class LoginView extends javax.swing.JFrame {
         au.setVisible(true);
     }
 
-    private void autenticacao(JXMapViewer mapViewer) {
+    private void autenticacao(JXMapViewer mapViewer) throws ParseException {
         DataSource dataSource = new DataSource();
         UsuarioDao dao = new UsuarioDao(dataSource);
         MD5Service md5Service = new MD5Service();

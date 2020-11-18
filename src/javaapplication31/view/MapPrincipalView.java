@@ -6,10 +6,10 @@
 package javaapplication31.view;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.text.ParseException;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.text.MaskFormatter;
 import org.jxmapviewer.JXMapViewer;
 
 /**
@@ -20,8 +20,10 @@ public class MapPrincipalView extends javax.swing.JFrame {
     /**
      * Creates new form MapPrincipalView
      * @param mapViewer
+     * @throws java.text.ParseException
      */
-    public MapPrincipalView(JXMapViewer mapViewer) {
+    public MapPrincipalView(JXMapViewer mapViewer) throws ParseException {
+        jTFDataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
         initComponents();
         this.setLayout(new BorderLayout());
         this.add(mapViewer);
@@ -48,6 +50,12 @@ public class MapPrincipalView extends javax.swing.JFrame {
         jTListagem = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLInfo2 = new javax.swing.JLabel();
+        jLDataInicial = new javax.swing.JLabel();
+        jLDataFinal = new javax.swing.JLabel();
+        jTFDataInicial = new javax.swing.JFormattedTextField();
+        jTFDataFinal = new javax.swing.JFormattedTextField();
+        jBLimpar = new javax.swing.JButton();
+        jBBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(100, 400));
@@ -80,9 +88,36 @@ public class MapPrincipalView extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("ℹ ");
+        jLabel2.setToolTipText("Informação para o uso do mapa ao lado");
 
         jLInfo2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLInfo2.setText("para mover e o scroll para aplicar zoom!");
+
+        jLDataInicial.setText("Data Inicial");
+
+        jLDataFinal.setText("Data Final");
+
+        try {
+            jTFDataInicial.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jTFDataInicial.setToolTipText("Informe a data inicial");
+
+        try {
+            jTFDataFinal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jBLimpar.setText("Limpar");
+        jBLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBLimparActionPerformed(evt);
+            }
+        });
+
+        jBBuscar.setText("Buscar");
 
         javax.swing.GroupLayout jpLayout = new javax.swing.GroupLayout(jp);
         jp.setLayout(jpLayout);
@@ -97,8 +132,17 @@ public class MapPrincipalView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLInfo2)
-                            .addComponent(jLInfo1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jLInfo1)
+                            .addComponent(jLDataInicial)
+                            .addComponent(jLDataFinal)
+                            .addComponent(jTFDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jpLayout.createSequentialGroup()
+                                    .addComponent(jBLimpar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(jBBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTFDataFinal, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jpLayout.setVerticalGroup(
@@ -109,23 +153,46 @@ public class MapPrincipalView extends javax.swing.JFrame {
                     .addComponent(jLInfo1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLInfo2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 136, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLDataInicial)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTFDataInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(jLDataFinal)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTFDataFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBLimpar)
+                    .addComponent(jBBuscar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addGap(41, 41, 41))
         );
 
         getContentPane().add(jp);
-        jp.setBounds(0, 0, 280, 380);
+        jp.setBounds(0, 0, 280, 440);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimparActionPerformed
+        jTFDataInicial.setText("");
+        jTFDataFinal.setText("");
+    }//GEN-LAST:event_jBLimparActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBBuscar;
+    private javax.swing.JButton jBLimpar;
+    private javax.swing.JLabel jLDataFinal;
+    private javax.swing.JLabel jLDataInicial;
     private javax.swing.JLabel jLInfo1;
     private javax.swing.JLabel jLInfo2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JFormattedTextField jTFDataFinal;
+    private javax.swing.JFormattedTextField jTFDataInicial;
     private javax.swing.JTable jTListagem;
     private javax.swing.JPanel jp;
     // End of variables declaration//GEN-END:variables
