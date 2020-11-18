@@ -144,9 +144,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jBCancelarActionPerformed
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
-        //autenticacao();
-        //this.dispose();
-         //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
+        //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
         JXMapViewer mapViewer = new JXMapViewer();
 
         // Create a TileFactoryInfo for OpenStreetMap
@@ -189,8 +187,8 @@ public class LoginView extends javax.swing.JFrame {
         Usuario usuario = dao.findUser(jTFNome.getText(), md5Service.md5(jPFSenha.getText()));
         if (usuario != null) {
             this.dispose();
-            MapView t = new MapView();
-            t.show(mapViewer);
+            MapPrincipalView t = new MapPrincipalView(mapViewer);
+            t.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Nome ou Senha está inválido!");
         }
