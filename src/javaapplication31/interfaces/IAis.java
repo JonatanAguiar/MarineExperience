@@ -18,4 +18,5 @@ public interface IAis {
     
     public List<Ais> findAll();
     
+    public List<Ais> findByDate(String dataInicial, String dataFinal);
 }

@@ -12,16 +12,9 @@ import javaapplication31.dao.DataSource;
 import javaapplication31.dao.UsuarioDao;
 import javaapplication31.model.Usuario;
 import javaapplication31.uteis.MD5Service;
+import javaapplication31.uteis.MapPoints;
 import javax.swing.JOptionPane;
-import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
-import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactoryInfo;
-
 /**
  *
  * @author jonat
@@ -147,13 +140,9 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jBCancelarActionPerformed
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
-        //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
-        JXMapViewer mapViewer = new JXMapViewer();
-        
-        
-        
+        MapPoints mapPoints = new MapPoints();
         try {
-            autenticacao(mapViewer);
+            autenticacao(mapPoints.RetornaPoints());
         } catch (ParseException ex) {
             Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
         }

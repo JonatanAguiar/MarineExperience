@@ -7,9 +7,15 @@ package javaapplication31.view;
 
 import java.awt.BorderLayout;
 import java.text.ParseException;
-import javax.swing.JFormattedTextField;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javaapplication31.dao.AisDao;
+import javaapplication31.dao.DataSource;
+import javaapplication31.model.Ais;
 import javax.swing.JFrame;
-import javax.swing.text.MaskFormatter;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import org.jxmapviewer.JXMapViewer;
 
 /**
@@ -17,13 +23,13 @@ import org.jxmapviewer.JXMapViewer;
  * @author Dell
  */
 public class MapPrincipalView extends javax.swing.JFrame {
+    private DefaultTableModel model;
     /**
      * Creates new form MapPrincipalView
      * @param mapViewer
      * @throws java.text.ParseException
      */
     public MapPrincipalView(JXMapViewer mapViewer) throws ParseException {
-        jTFDataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
         initComponents();
         this.setLayout(new BorderLayout());
         this.add(mapViewer);
@@ -59,15 +65,18 @@ public class MapPrincipalView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(100, 400));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(null);
 
         jp.setBackground(new java.awt.Color(255, 255, 255));
         jp.setMinimumSize(new java.awt.Dimension(340, 380));
 
-        jLInfo1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLInfo1.setText("No mapa, use o botão esquerdo do mouse");
 
-        jTListagem.setForeground(new java.awt.Color(255, 255, 255));
         jTListagem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -90,11 +99,14 @@ public class MapPrincipalView extends javax.swing.JFrame {
         jLabel2.setText("ℹ ");
         jLabel2.setToolTipText("Informação para o uso do mapa ao lado");
 
-        jLInfo2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jLInfo2.setText("para mover e o scroll para aplicar zoom!");
 
+        jLDataInicial.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLDataInicial.setForeground(new java.awt.Color(0, 0, 255));
         jLDataInicial.setText("Data Inicial");
 
+        jLDataFinal.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLDataFinal.setForeground(new java.awt.Color(0, 0, 255));
         jLDataFinal.setText("Data Final");
 
         try {
@@ -109,6 +121,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jTFDataFinal.setToolTipText("Informe a data final");
 
         jBLimpar.setText("Limpar");
         jBLimpar.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +131,11 @@ public class MapPrincipalView extends javax.swing.JFrame {
         });
 
         jBBuscar.setText("Buscar");
+        jBBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpLayout = new javax.swing.GroupLayout(jp);
         jp.setLayout(jpLayout);
@@ -165,9 +183,9 @@ public class MapPrincipalView extends javax.swing.JFrame {
                 .addGroup(jpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBLimpar)
                     .addComponent(jBBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         getContentPane().add(jp);
@@ -180,6 +198,32 @@ public class MapPrincipalView extends javax.swing.JFrame {
         jTFDataInicial.setText("");
         jTFDataFinal.setText("");
     }//GEN-LAST:event_jBLimparActionPerformed
+
+    private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
+        DataSource dataSource = new DataSource();
+        AisDao dao = new AisDao(dataSource);
+        List<Ais> aiss = new ArrayList<>();
+        model.setNumRows(0);
+        if(jTFDataInicial.getText().equals("  /  /    ") && jTFDataFinal.getText().equals("  /  /    ")){
+            aiss = dao.findAll();
+            for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
+                model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
+            }
+        }else{
+//            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+//            System.out.println(formato.format(jTFDataInicial.getText()));
+//            aiss = dao.findByDate(formato.format(jTFDataInicial.getText()), formato.format(jTFDataFinal.getText()));
+//            for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
+//                model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
+//            }
+        }
+        System.out.println(jTFDataInicial.getText());
+    }//GEN-LAST:event_jBBuscarActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        model = (DefaultTableModel) jTListagem.getModel();
+        this.setLocationRelativeTo(null);
+    }//GEN-LAST:event_formWindowOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
