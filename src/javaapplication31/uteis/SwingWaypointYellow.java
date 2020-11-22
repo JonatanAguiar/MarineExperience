@@ -12,17 +12,16 @@ import java.awt.event.MouseListener;
  *
  * @author Daniel Stahr
  */
-public class SwingWaypoint extends DefaultWaypoint {
+public class SwingWaypointYellow extends DefaultWaypoint {
     private final JLabel label;
     private final String text;
 
-    public SwingWaypoint(String text, GeoPosition coord) {
+    public SwingWaypointYellow(String text, GeoPosition coord) {
         super(coord);
         this.text = text;
-        label = new JLabel();
-        label.addMouseListener(new SwingWaypointMouseListener());
-        label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaapplication31/assets/boatYellow.jpg")));
-        label.setBounds(0, 0, 413, 340);
+        ImageIcon icon = new ImageIcon(getClass().getResource("boatYellow30.png"));
+        label = new JLabel(icon);
+        label.setToolTipText("Barco amarelo");
         label.setVisible(true);
     }
 

@@ -12,11 +12,11 @@ import java.awt.geom.Point2D;
  *
  * @author Daniel Stahr
  */
-public class SwingWaypointOverlayPainter extends WaypointPainter<SwingWaypoint> {
+public class SwingWaypointOverlayPainter extends WaypointPainter<SwingWaypointYellow> {
 
     @Override
     protected void doPaint(Graphics2D g, JXMapViewer jxMapViewer, int width, int height) {
-        for (SwingWaypoint swingWaypoint : getWaypoints()) {
+        for (SwingWaypointYellow swingWaypoint : getWaypoints()) {
             Point2D point = jxMapViewer.getTileFactory().geoToPixel(
                     swingWaypoint.getPosition(), jxMapViewer.getZoom());
             Rectangle rectangle = jxMapViewer.getViewportBounds();

@@ -45,27 +45,27 @@ public class AisDao implements IAis{
         }
     }
 
-    @Override
-    public List<Ais> findAll() {
-        List<Ais> aiss = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM Ais";
-
-            try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql)) {
-                pstm.execute();
-                
-                try ( ResultSet rst = pstm.getResultSet()) {
-                    while (rst.next()) {
-                        aiss.add(new Ais(rst.getInt(1),rst.getString(2),rst.getDate(3)));
-                    }
-                }
-            }
-            return aiss;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
+//    @Override
+//    public List<Ais> findAll() {
+//        List<Ais> aiss = new ArrayList<>();
+//        try {
+//            String sql = "SELECT * FROM Ais";
+//
+//            try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql)) {
+//                pstm.execute();
+//                
+//                try ( ResultSet rst = pstm.getResultSet()) {
+//                    while (rst.next()) {
+//                        aiss.add(new Ais(rst.getInt(1),rst.getString(2),rst.getDate(3)));
+//                    }
+//                }
+//            }
+//            return aiss;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//    
     @Override
     public List<Ais> findByDate(String dataInicial, String dataFinal) {
         List<Ais> aiss = new ArrayList<>();

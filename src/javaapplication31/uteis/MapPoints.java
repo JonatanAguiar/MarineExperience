@@ -57,21 +57,21 @@ public class MapPoints {
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         
-        Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>(Arrays.asList(
-                new SwingWaypoint("Litoral", litoral),
-                new SwingWaypoint("Frankfurt", frankfurt),
-                new SwingWaypoint("Wiesbaden", wiesbaden),
-                new SwingWaypoint("Mainz", mainz),
-                new SwingWaypoint("Darmstadt", darmstadt),
-                new SwingWaypoint("Offenbach", offenbach)));
+        Set<SwingWaypointYellow> waypoints = new HashSet<SwingWaypointYellow>(Arrays.asList(
+                new SwingWaypointYellow("Litoral", litoral),
+                new SwingWaypointYellow("Frankfurt", frankfurt),
+                new SwingWaypointYellow("Wiesbaden", wiesbaden),
+                new SwingWaypointYellow("Mainz", mainz),
+                new SwingWaypointYellow("Darmstadt", darmstadt),
+                new SwingWaypointYellow("Offenbach", offenbach)));
 
         // Set the overlay painter
-        WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
+        WaypointPainter<SwingWaypointYellow> swingWaypointPainter = new SwingWaypointOverlayPainter();
         swingWaypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(swingWaypointPainter);
 
-        // Add the JButtons to the map viewer
-        for (SwingWaypoint w : waypoints) {
+        // Add the boats to the map viewer
+        for (SwingWaypointYellow w : waypoints) {
             mapViewer.add(w.getLabel());
         }
         

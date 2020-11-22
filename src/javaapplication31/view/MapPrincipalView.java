@@ -7,8 +7,9 @@ package javaapplication31.view;
 
 import java.awt.BorderLayout;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javaapplication31.dao.AisDao;
 import javaapplication31.dao.DataSource;
@@ -114,6 +115,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jTFDataInicial.setText("15/06/2019");
         jTFDataInicial.setToolTipText("Informe a data inicial");
 
         try {
@@ -121,6 +123,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jTFDataFinal.setText("30/07/2019");
         jTFDataFinal.setToolTipText("Informe a data final");
 
         jBLimpar.setText("Limpar");
@@ -197,6 +200,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
     private void jBLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimparActionPerformed
         jTFDataInicial.setText("");
         jTFDataFinal.setText("");
+        model.setNumRows(0);
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
@@ -204,19 +208,21 @@ public class MapPrincipalView extends javax.swing.JFrame {
         AisDao dao = new AisDao(dataSource);
         List<Ais> aiss = new ArrayList<>();
         model.setNumRows(0);
-        if(jTFDataInicial.getText().equals("  /  /    ") && jTFDataFinal.getText().equals("  /  /    ")){
-            aiss = dao.findAll();
+        if(!jTFDataInicial.getText().equals("  /  /    ") && !jTFDataFinal.getText().equals("  /  /    ")){
+            String[] data = jTFDataInicial.getText().split("/");
+            String dataIni = data[2]+"-"+data[1]+"-"+data[0];
+            data = jTFDataFinal.getText().split("/");
+            String dataFin = data[2]+"-"+data[1]+"-"+data[0];
+            
+            aiss = dao.findByDate(dataIni,dataFin);
             for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
             }
         }else{
-//            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-//            System.out.println(formato.format(jTFDataInicial.getText()));
-//            aiss = dao.findByDate(formato.format(jTFDataInicial.getText()), formato.format(jTFDataFinal.getText()));
-//            for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
-//                model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
-//            }
+            JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
         }
+        
+        
         System.out.println(jTFDataInicial.getText());
     }//GEN-LAST:event_jBBuscarActionPerformed
 

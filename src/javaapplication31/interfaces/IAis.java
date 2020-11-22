@@ -16,7 +16,7 @@ public interface IAis {
 
     public Ais findUser(int id);
     
-    public List<Ais> findAll();
+    //public List<Ais> findAll();
     
     public List<Ais> findByDate(String dataInicial, String dataFinal);
 }
