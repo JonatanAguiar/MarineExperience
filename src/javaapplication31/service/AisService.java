@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 public class AisService {
 
