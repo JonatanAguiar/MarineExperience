@@ -17,15 +17,22 @@ import java.awt.geom.AffineTransform;
  *
  * @author Daniel Stahr
  */
-public class SwingWaypointGreen extends DefaultWaypoint {
+public class SwingWaypoint extends DefaultWaypoint {
+
     private final JLabel label;
     private final String text;
 
-    public SwingWaypointGreen(String text, GeoPosition coord) {
+    public SwingWaypoint(String text, Double angulo, String canal, GeoPosition coord) {
         super(coord);
         this.text = text;
-        ImageIcon icon = new ImageIcon(getClass().getResource("boatYellow30.png"));
-        label = new JLabel(icon){
+        ImageIcon icon;
+        if(canal.equals("A")){
+            icon = new ImageIcon(getClass().getResource("boatYellow30.png"));
+        }else{
+            icon = new ImageIcon(getClass().getResource("boatGreen30.png"));
+        }
+        label = new JLabel(icon) {
+            @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -34,13 +41,13 @@ public class SwingWaypointGreen extends DefaultWaypoint {
                 Shape oldshape = g2.getClip();
                 double x = getWidth() / 2.0;
                 double y = getHeight() / 2.0;
-                aT.rotate(Math.toRadians(270), x, y);
+                aT.rotate(Math.toRadians(angulo), x, y);
                 g2.setTransform(aT);
                 g2.setClip(oldshape);
                 super.paintComponent(g);
             }
         };
-        label.setToolTipText("Barco amarelo");
+        label.setToolTipText(text);
         label.setVisible(true);
     }
 

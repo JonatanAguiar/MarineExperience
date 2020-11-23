@@ -6,7 +6,6 @@
 package javaapplication31.uteis;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.event.MouseInputListener;
@@ -25,6 +24,8 @@ import org.jxmapviewer.viewer.WaypointPainter;
  * @author Dell
  */
 public class MapPoints {
+    private Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
+    
     public JXMapViewer RetornaPoints(){
         File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
         //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
@@ -57,21 +58,24 @@ public class MapPoints {
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         
-        Set<SwingWaypointYellow> waypoints = new HashSet<SwingWaypointYellow>(Arrays.asList(
-                new SwingWaypointYellow("Litoral", 200.0, litoral),
-                new SwingWaypointYellow("Frankfurt", 130.0, frankfurt),
-                new SwingWaypointYellow("Wiesbaden", 15.0,wiesbaden),
-                new SwingWaypointYellow("Mainz", 27.5, mainz),
-                new SwingWaypointYellow("Darmstadt", 140.20, darmstadt),
-                new SwingWaypointYellow("Offenbach", 201.0, offenbach)));
+//        waypoints = new HashSet<SwingWaypoint>(Arrays.asList(
+//                new SwingWaypoint("Litoral", 200.0, "A", litoral),
+//                new SwingWaypoint("Frankfurt", 130.0, "B", frankfurt),
+//                new SwingWaypoint("Wiesbaden", 15.0, "B", wiesbaden),
+//                new SwingWaypoint("Mainz", 27.5, "A", mainz),
+//                new SwingWaypoint("Darmstadt", 140.20, "B", darmstadt),
+//                new SwingWaypoint("Offenbach", 201.0, "A", offenbach)));
+
+        SwingWaypoint swp = new SwingWaypoint("Litoral", 200.0, "A", litoral);
+        waypoints.add(swp);
 
         // Set the overlay painter
-        WaypointPainter<SwingWaypointYellow> swingWaypointPainter = new SwingWaypointOverlayPainter();
+        WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
         swingWaypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(swingWaypointPainter);
 
         // Add the boats to the map viewer
-        for (SwingWaypointYellow w : waypoints) {
+        for (SwingWaypoint w : waypoints) {
             mapViewer.add(w.getLabel());
         }
         
