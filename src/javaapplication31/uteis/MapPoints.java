@@ -58,12 +58,12 @@ public class MapPoints {
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         
         Set<SwingWaypointYellow> waypoints = new HashSet<SwingWaypointYellow>(Arrays.asList(
-                new SwingWaypointYellow("Litoral", litoral),
-                new SwingWaypointYellow("Frankfurt", frankfurt),
-                new SwingWaypointYellow("Wiesbaden", wiesbaden),
-                new SwingWaypointYellow("Mainz", mainz),
-                new SwingWaypointYellow("Darmstadt", darmstadt),
-                new SwingWaypointYellow("Offenbach", offenbach)));
+                new SwingWaypointYellow("Litoral", 200.0, litoral),
+                new SwingWaypointYellow("Frankfurt", 130.0, frankfurt),
+                new SwingWaypointYellow("Wiesbaden", 15.0,wiesbaden),
+                new SwingWaypointYellow("Mainz", 27.5, mainz),
+                new SwingWaypointYellow("Darmstadt", 140.20, darmstadt),
+                new SwingWaypointYellow("Offenbach", 201.0, offenbach)));
 
         // Set the overlay painter
         WaypointPainter<SwingWaypointYellow> swingWaypointPainter = new SwingWaypointOverlayPainter();

@@ -1,11 +1,16 @@
 package javaapplication31.uteis;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.AffineTransform;
 
 /**
  * A waypoint that is represented by a button on the map.
@@ -20,7 +25,21 @@ public class SwingWaypointGreen extends DefaultWaypoint {
         super(coord);
         this.text = text;
         ImageIcon icon = new ImageIcon(getClass().getResource("boatYellow30.png"));
-        label = new JLabel(icon);
+        label = new JLabel(icon){
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                        RenderingHints.VALUE_ANTIALIAS_ON);
+                AffineTransform aT = g2.getTransform();
+                Shape oldshape = g2.getClip();
+                double x = getWidth() / 2.0;
+                double y = getHeight() / 2.0;
+                aT.rotate(Math.toRadians(270), x, y);
+                g2.setTransform(aT);
+                g2.setClip(oldshape);
+                super.paintComponent(g);
+            }
+        };
         label.setToolTipText("Barco amarelo");
         label.setVisible(true);
     }
