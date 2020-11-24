@@ -6,7 +6,6 @@
 package javaapplication31.view;
 
 import java.awt.BorderLayout;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javaapplication31.dao.AisDao;
@@ -24,13 +23,11 @@ import org.jxmapviewer.JXMapViewer;
  */
 public class MapPrincipalView extends javax.swing.JFrame {
     private DefaultTableModel model;
-    /**
-     * Creates new form MapPrincipalView
-     * @param mapViewer
-     * @throws java.text.ParseException
-      
-     
-     */
+    private boolean existe = false;
+    private List<Ais> aiss = new ArrayList<>();
+    private final MapPoints mapPoints = new MapPoints();
+    private JXMapViewer mapViewer = new JXMapViewer();
+   
     public MapPrincipalView(){
         initComponents();
     }
@@ -45,7 +42,6 @@ public class MapPrincipalView extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
-
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -122,7 +118,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jTFDataInicial.setText("15/06/2019");
+        jTFDataInicial.setText("24/07/2019");
         jTFDataInicial.setToolTipText("Informe a data inicial");
 
         try {
@@ -130,7 +126,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jTFDataFinal.setText("30/07/2019");
+        jTFDataFinal.setText("26/07/2019");
         jTFDataFinal.setToolTipText("Informe a data final");
 
         jBLimpar.setText("Limpar");
@@ -220,7 +216,6 @@ public class MapPrincipalView extends javax.swing.JFrame {
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         DataSource dataSource = new DataSource();
         AisDao dao = new AisDao(dataSource);
-        List<Ais> aiss = new ArrayList<>(3);
         model.setNumRows(0);
         if(!jTFDataInicial.getText().equals("  /  /    ") && !jTFDataFinal.getText().equals("  /  /    ")){
             String[] data = jTFDataInicial.getText().split("/");
@@ -232,8 +227,15 @@ public class MapPrincipalView extends javax.swing.JFrame {
             for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
             }
-            MapPoints mapPoints = new MapPoints();
-            iniciaMap(mapPoints.RetornaPoints(aiss));
+            
+            if(existe==false){
+                mapViewer= mapPoints.RetornaPoints(aiss);
+                iniciaMap(mapViewer);
+            }else{
+                mapViewer = mapPoints.RetornaNewPoints(mapViewer, aiss);
+                iniciaMap(mapViewer);
+            }
+            existe=true;
         }else{
             JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
         }
