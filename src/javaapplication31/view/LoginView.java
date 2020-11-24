@@ -5,16 +5,11 @@
  */
 package javaapplication31.view;
 
-import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javaapplication31.dao.DataSource;
 import javaapplication31.dao.UsuarioDao;
 import javaapplication31.model.Usuario;
 import javaapplication31.uteis.MD5Service;
-import javaapplication31.uteis.MapPoints;
 import javax.swing.JOptionPane;
-import org.jxmapviewer.JXMapViewer;
 /**
  *
  * @author jonat
@@ -140,12 +135,7 @@ public class LoginView extends javax.swing.JFrame {
     }//GEN-LAST:event_jBCancelarActionPerformed
 
     private void jBEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEntrarActionPerformed
-        MapPoints mapPoints = new MapPoints();
-        try {
-            autenticacao(mapPoints.RetornaPoints());
-        } catch (ParseException ex) {
-            Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        autenticacao();
     }//GEN-LAST:event_jBEntrarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -157,14 +147,14 @@ public class LoginView extends javax.swing.JFrame {
         au.setVisible(true);
     }
 
-    private void autenticacao(JXMapViewer mapViewer) throws ParseException {
+    private void autenticacao(){
         DataSource dataSource = new DataSource();
         UsuarioDao dao = new UsuarioDao(dataSource);
         MD5Service md5Service = new MD5Service();
         Usuario usuario = dao.findUser(jTFNome.getText(), md5Service.md5(jPFSenha.getText()));
         if (usuario != null) {
             this.dispose();
-            MapPrincipalView t = new MapPrincipalView(mapViewer);
+            MapPrincipalView t = new MapPrincipalView();
             t.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Nome ou Senha está inválido!");

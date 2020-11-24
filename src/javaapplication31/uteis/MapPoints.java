@@ -7,7 +7,11 @@ package javaapplication31.uteis;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import javaapplication31.model.Ais;
+import javaapplication31.model.Barco;
+import javaapplication31.service.AisService;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -26,7 +30,7 @@ import org.jxmapviewer.viewer.WaypointPainter;
 public class MapPoints {
     private Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
     
-    public JXMapViewer RetornaPoints(){
+    public JXMapViewer RetornaPoints(List<Ais> aiss){
         File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
         //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
         JXMapViewer mapViewer = new JXMapViewer();
@@ -41,35 +45,24 @@ public class MapPoints {
         tileFactory.setThreadPoolSize(8);
 
         // Set the focus
-        GeoPosition litoral = new GeoPosition(-29.5,-49.4);
-        GeoPosition frankfurt = new GeoPosition(-30.2,-49.9);
-        GeoPosition wiesbaden = new GeoPosition(-29.7,-49.8);
-        GeoPosition mainz     = new GeoPosition(-30,-49.62);
-        GeoPosition darmstadt = new GeoPosition(-29.7,-48.8);
-        GeoPosition offenbach   = new GeoPosition(-30,-49.65);
-
-        // Set the focus
         mapViewer.setZoom(9);
+        GeoPosition litoral = new GeoPosition(-29.5,-49.4);
         mapViewer.setAddressLocation(litoral);
-
+        
+        aiss.forEach(x -> {
+            AisService aisService = new AisService();
+            Barco boat = aisService.Post_JSON(x.getMsg());
+            GeoPosition newPosition = new GeoPosition(boat.getLatitude(),boat.getLongitude());
+            SwingWaypoint swp = new SwingWaypoint(boat.getMmsi(), boat.getTrueHeading(), boat.getRadioChannelCode(), newPosition);
+            waypoints.add(swp);
+        });
+        
         // Add interactions
         MouseInputListener mia = new PanMouseInputListener(mapViewer);
         mapViewer.addMouseListener(mia);
         mapViewer.addMouseMotionListener(mia);
         mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
         
-//        waypoints = new HashSet<SwingWaypoint>(Arrays.asList(
-//                new SwingWaypoint("Litoral", 200.0, "A", litoral),
-//                new SwingWaypoint("Frankfurt", 130.0, "B", frankfurt),
-//                new SwingWaypoint("Wiesbaden", 15.0, "B", wiesbaden),
-//                new SwingWaypoint("Mainz", 27.5, "A", mainz),
-//                new SwingWaypoint("Darmstadt", 140.20, "B", darmstadt),
-//                new SwingWaypoint("Offenbach", 201.0, "A", offenbach)));
-
-        SwingWaypoint swp = new SwingWaypoint("Litoral", 200.0, "A", litoral);
-        waypoints.add(swp);
-
-        // Set the overlay painter
         WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
         swingWaypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(swingWaypointPainter);

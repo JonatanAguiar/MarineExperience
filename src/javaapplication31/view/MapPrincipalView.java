@@ -8,12 +8,11 @@ package javaapplication31.view;
 import java.awt.BorderLayout;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javaapplication31.dao.AisDao;
 import javaapplication31.dao.DataSource;
 import javaapplication31.model.Ais;
+import javaapplication31.uteis.MapPoints;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -29,9 +28,14 @@ public class MapPrincipalView extends javax.swing.JFrame {
      * Creates new form MapPrincipalView
      * @param mapViewer
      * @throws java.text.ParseException
+      
+     
      */
-    public MapPrincipalView(JXMapViewer mapViewer) throws ParseException {
+    public MapPrincipalView(){
         initComponents();
+    }
+
+    public void iniciaMap(JXMapViewer mapViewer){
         this.setLayout(new BorderLayout());
         this.add(mapViewer);
         this.add(jp, BorderLayout.WEST);
@@ -42,6 +46,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         this.setVisible(true);
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,9 +68,11 @@ public class MapPrincipalView extends javax.swing.JFrame {
         jTFDataFinal = new javax.swing.JFormattedTextField();
         jBLimpar = new javax.swing.JButton();
         jBBuscar = new javax.swing.JButton();
+        jLInicial = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(100, 400));
+        setBackground(new java.awt.Color(153, 204, 255));
+        setMinimumSize(new java.awt.Dimension(1000, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -192,7 +199,14 @@ public class MapPrincipalView extends javax.swing.JFrame {
         );
 
         getContentPane().add(jp);
-        jp.setBounds(0, 0, 280, 440);
+        jp.setBounds(0, 0, 280, 620);
+
+        jLInicial.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLInicial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javaapplication31/assets/atencao.png"))); // NOI18N
+        jLInicial.setText("    Busque com um intervalo válido de datas para começar!");
+        jLInicial.setToolTipText("");
+        getContentPane().add(jLInicial);
+        jLInicial.setBounds(430, 250, 510, 30);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -206,7 +220,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         DataSource dataSource = new DataSource();
         AisDao dao = new AisDao(dataSource);
-        List<Ais> aiss = new ArrayList<>();
+        List<Ais> aiss = new ArrayList<>(3);
         model.setNumRows(0);
         if(!jTFDataInicial.getText().equals("  /  /    ") && !jTFDataFinal.getText().equals("  /  /    ")){
             String[] data = jTFDataInicial.getText().split("/");
@@ -218,12 +232,11 @@ public class MapPrincipalView extends javax.swing.JFrame {
             for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
             }
+            MapPoints mapPoints = new MapPoints();
+            iniciaMap(mapPoints.RetornaPoints(aiss));
         }else{
             JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
         }
-        
-        
-        System.out.println(jTFDataInicial.getText());
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -239,6 +252,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
     private javax.swing.JLabel jLDataInicial;
     private javax.swing.JLabel jLInfo1;
     private javax.swing.JLabel jLInfo2;
+    private javax.swing.JLabel jLInicial;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JFormattedTextField jTFDataFinal;
