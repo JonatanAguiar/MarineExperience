@@ -24,6 +24,11 @@ public class Ais {
         this.data = data;
     }
 
+    public Ais(int id, String msg) {
+        this.id = id;
+        this.msg = msg;
+    }
+
     public int getId() {
         return id;
     }

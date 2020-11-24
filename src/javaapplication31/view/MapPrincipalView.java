@@ -223,6 +223,9 @@ public class MapPrincipalView extends javax.swing.JFrame {
             data = jTFDataFinal.getText().split("/");
             String dataFin = data[2]+"-"+data[1]+"-"+data[0];
             
+//            for (int i = 0; i < 20; i++) {
+//                aiss.add(new Ais(i, "!AIVDM,1,1,,B,19NSEl@01wtKRwMftDt`Onht0<0:,0*01"));
+//            }
             aiss = dao.findByDate(dataIni,dataFin);
             for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
