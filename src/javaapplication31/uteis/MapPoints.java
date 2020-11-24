@@ -30,15 +30,11 @@ import org.jxmapviewer.viewer.WaypointPainter;
 public class MapPoints {
 
     private Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
-
+    private JXMapViewer mapViewer = new JXMapViewer();
+    private List<Ais> aiss;
+    
     public JXMapViewer RetornaPoints(List<Ais> aiss) {
-        File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
-        //https://github.com/msteiger/jxmapviewer2/tree/master/examples/src
-        JXMapViewer mapViewer = new JXMapViewer();
-        return RetornaNewPoints(mapViewer, aiss);
-    }
-
-    public JXMapViewer RetornaNewPoints(JXMapViewer mapViewer, List<Ais> aiss) {
+        this.aiss = aiss;
         File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
 
         // Create a TileFactoryInfo for OpenStreetMap
@@ -56,11 +52,10 @@ public class MapPoints {
         mapViewer.setAddressLocation(litoral);
 
         aiss.forEach(x -> {
+            System.out.println("CHAMEI");
             AisService aisService = new AisService();
-            Barco boat = aisService.Post_JSON(x.getMsg());
-            GeoPosition newPosition = new GeoPosition(boat.getLatitude(), boat.getLongitude());
-            SwingWaypoint swp = new SwingWaypoint(boat.getMmsi(), boat.getTrueHeading(), boat.getRadioChannelCode(), newPosition);
-            waypoints.add(swp);
+            aisService.Post_JSON(x.getMsg(), this);
+            
         });
 
         // Add interactions
@@ -79,5 +74,12 @@ public class MapPoints {
         }
 
         return mapViewer;
+    }
+    
+    public void addWaypoint(Barco boat){
+        GeoPosition newPosition = new GeoPosition(boat.getLatitude(), boat.getLongitude());
+        SwingWaypoint swp = new SwingWaypoint(boat.getMmsi(), boat.getTrueHeading(), boat.getRadioChannelCode(), newPosition);
+        
+        //mapViewer.add(swp.getLabel());
     }
 }

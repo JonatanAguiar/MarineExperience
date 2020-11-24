@@ -231,17 +231,15 @@ public class MapPrincipalView extends javax.swing.JFrame {
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
             }
             
-            if(existe==false){
                 mapViewer= mapPoints.RetornaPoints(aiss);
                 iniciaMap(mapViewer);
-            }else{
-                mapViewer = mapPoints.RetornaNewPoints(mapViewer, aiss);
-                iniciaMap(mapViewer);
-            }
+            
+            
             existe=true;
         }else{
             JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
         }
+        initComponents();
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
