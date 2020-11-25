@@ -12,6 +12,7 @@ import java.util.Set;
 import javaapplication31.model.Ais;
 import javaapplication31.model.Barco;
 import javaapplication31.service.AisService;
+import javaapplication31.view.MapPrincipalView;
 import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
@@ -32,8 +33,12 @@ public class MapPoints {
     private Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
     private JXMapViewer mapViewer = new JXMapViewer();
     private List<Ais> aiss;
+    private WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();;
+    private MouseInputListener mia;
+    private MapPrincipalView mpv;
     
-    public JXMapViewer RetornaPoints(List<Ais> aiss) {
+    public JXMapViewer RetornaPoints(List<Ais> aiss, MapPrincipalView mpv) {
+        this.mpv = mpv;
         this.aiss = aiss;
         File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
 
@@ -52,34 +57,38 @@ public class MapPoints {
         mapViewer.setAddressLocation(litoral);
 
         aiss.forEach(x -> {
-            System.out.println("CHAMEI");
+            //chama requisicao a quantidade de vezes precisar
             AisService aisService = new AisService();
             aisService.Post_JSON(x.getMsg(), this);
-            
         });
 
-        // Add interactions
-        MouseInputListener mia = new PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(mia);
-        mapViewer.addMouseMotionListener(mia);
-        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
-
-        WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
-        swingWaypointPainter.setWaypoints(waypoints);
-        mapViewer.setOverlayPainter(swingWaypointPainter);
-
-        // Add the boats to the map viewer
-        for (SwingWaypoint w : waypoints) {
-            mapViewer.add(w.getLabel());
+        // Add interacao de arrastar e zoom
+        //primeira vez add
+        if(true==true){
+            addInteracao();
         }
 
         return mapViewer;
     }
     
     public void addWaypoint(Barco boat){
+        //na requisicao post, trago de volta barco a barco, add nas listas e seguindo o fluxo
         GeoPosition newPosition = new GeoPosition(boat.getLatitude(), boat.getLongitude());
         SwingWaypoint swp = new SwingWaypoint(boat.getMmsi(), boat.getTrueHeading(), boat.getRadioChannelCode(), newPosition);
-        
-        //mapViewer.add(swp.getLabel());
+        waypoints.add(swp);
+        swingWaypointPainter.setWaypoints(waypoints);
+        mapViewer.setOverlayPainter(swingWaypointPainter);
+        // Add the boats to the map viewer
+        for (SwingWaypoint w : waypoints) {
+            mapViewer.add(w.getLabel());
+        }
+        this.mpv.iniciaMap(mapViewer);
+    }
+    
+    public void addInteracao(){
+        mia = new PanMouseInputListener(mapViewer);
+        mapViewer.addMouseListener(mia);
+        mapViewer.addMouseMotionListener(mia);
+        mapViewer.addMouseWheelListener(new ZoomMouseWheelListenerCursor(mapViewer));
     }
 }

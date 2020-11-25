@@ -31,7 +31,7 @@ public class SwingWaypoint extends DefaultWaypoint {
         }else{
             icon = new ImageIcon(getClass().getResource("boatGreen30.png"));
         }
-        label = new JLabel(icon) {
+        this.label = new JLabel(icon) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g;

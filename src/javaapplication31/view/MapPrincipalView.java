@@ -23,7 +23,6 @@ import org.jxmapviewer.JXMapViewer;
  */
 public class MapPrincipalView extends javax.swing.JFrame {
     private DefaultTableModel model;
-    private boolean existe = false;
     private List<Ais> aiss = new ArrayList<>();
     private final MapPoints mapPoints = new MapPoints();
     private JXMapViewer mapViewer = new JXMapViewer();
@@ -223,23 +222,15 @@ public class MapPrincipalView extends javax.swing.JFrame {
             data = jTFDataFinal.getText().split("/");
             String dataFin = data[2]+"-"+data[1]+"-"+data[0];
             
-//            for (int i = 0; i < 20; i++) {
-//                aiss.add(new Ais(i, "!AIVDM,1,1,,B,19NSEl@01wtKRwMftDt`Onht0<0:,0*01"));
-//            }
             aiss = dao.findByDate(dataIni,dataFin);
             for (int x = 0; x < aiss.size(); x++) {//add na tabela os dados
                 model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
             }
-            
-                mapViewer= mapPoints.RetornaPoints(aiss);
-                iniciaMap(mapViewer);
-            
-            
-            existe=true;
+            mapViewer= mapPoints.RetornaPoints(aiss,this);
+            iniciaMap(mapViewer);
         }else{
             JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
         }
-        initComponents();
     }//GEN-LAST:event_jBBuscarActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
