@@ -23,7 +23,7 @@ public class MapPoints {
 
     private final Set<SwingWaypoint> waypoints = new HashSet<SwingWaypoint>();
     private final JXMapViewer mapViewer = new JXMapViewer();
-    private final WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();;
+    private final WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
     private MouseInputListener mia;
     private MapPrincipalView mpv;
     
@@ -45,11 +45,14 @@ public class MapPoints {
         GeoPosition litoral = new GeoPosition(-29.5, -49.4);
         mapViewer.setAddressLocation(litoral);
 
-        aiss.forEach(x -> {
+        for (int i = 0; i < aiss.size(); i++) {
             //chama requisicao a quantidade de vezes precisar
             AisService aisService = new AisService(this);
-            aisService.Post_JSON(x.getMsg());
-        });
+            aisService.Post_JSON(aiss.get(i).getMsg());
+        }
+        
+//        aiss.forEach(x -> {
+//        });
 
         // Add interacao de arrastar e zoom
         addInteracao();
@@ -65,10 +68,13 @@ public class MapPoints {
         swingWaypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(swingWaypointPainter);
         // Add label no map viewer
+        
         waypoints.forEach(w -> {
+            //System.out.println(w.getLabel());
             mapViewer.add(w.getLabel());
-            this.mpv.iniciaMap(mapViewer);
+            //this.mpv.iniciaMap(mapViewer);
         });
+        //time
         this.mpv.iniciaMap(mapViewer);
     }
     

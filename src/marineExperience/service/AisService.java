@@ -26,6 +26,7 @@ public class AisService {
             Barco boat = new Barco();
             String query_url = "http://ais.tbsalling.dk/decode";
             String json = "{ \"nmea\" : \"" + message + "\"}";
+            String latidude, longitude, trueHeading;
             try {
                 URL url = new URL(query_url);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -49,23 +50,16 @@ public class AisService {
                 System.out.println(result);
                 
                 String[] props = result.split(",");
-                if (props[9].equals(null)) {
-                    props[9] = "0";
-                }
-                System.out.println(props[9]);
-                if (props[22].equals(null)) {
-                    props[22] = "0";
-                }
                 System.out.println(props[22]);
-                if (props[27].equals(null)) {
+                if (props[27] == null) {
                     props[27] = "0";
                 }
                 System.out.println(props[27]);
-                if (props[28].equals(null)) {
+                if (props[28] == null) {
                     props[28] = "0";
                 }
                 System.out.println(props[28]);
-                if (props[30].equals(null)) {
+                if (props[30] == null) {
                     props[30] = "0";
                 }
                 System.out.println(props[30]);
@@ -73,13 +67,24 @@ public class AisService {
                 int indexIni = msiCon.indexOf("{");
                 int indexFin = msiCon.indexOf("}");
                 String msi = msiCon.substring(indexIni + 1, indexFin);
+                latidude=props[27];
+                if(props[27].contains("\"longitude\"")){
+                    latidude = props[26];
+                }
+                longitude=props[28];
+                if(props[28].contains("\"courseOverGround\"")){
+                    longitude = props[27];
+                }
+                trueHeading=props[30];
+                if(props[30].contains("\"second\"")){
+                    trueHeading = props[29];
+                }
                 String barcoCompleto = "{"
                         + props[9] + ","
                         + msi + ","
-                        + props[27] + ","
-                        + props[28] + ","
-                        + props[30] + "}";
-                
+                        + latidude + ","
+                        + longitude + ","
+                        + trueHeading + "}";
                 Gson gson = new Gson();
                 boat = gson.fromJson(barcoCompleto, Barco.class);
                 mapPoints.addWaypoint(boat);
