@@ -70,7 +70,7 @@ public class AisDao implements IAis{
     public List<Ais> findByDate(String dataInicial, String dataFinal) {
         List<Ais> aiss = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM Ais WHERE dt >= ? AND dt <= ? limit 20";
+            String sql = "SELECT * FROM Ais WHERE dt >= ? AND dt <= ?";
 
             try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql)) {
                 pstm.setString(1, dataInicial);

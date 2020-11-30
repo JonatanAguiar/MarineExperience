@@ -43,25 +43,19 @@ public class AisService {
                 os.write(json.getBytes("UTF-8"));
                 os.close();
                 
-                // read the response
+                // ler a resposta
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 String result = IOUtils.toString(in, "UTF-8");
                 
                 System.out.println(result);
                 
+                //se a resposta da api voltar vazia retorna pra fora
+                if(result.equals("[]")){
+                    return;
+                }
                 String[] props = result.split(",");
-                System.out.println(props[22]);
-                if (props[27] == null) {
-                    props[27] = "0";
-                }
-                System.out.println(props[27]);
-                if (props[28] == null) {
-                    props[28] = "0";
-                }
-                System.out.println(props[28]);
-                if (props[30] == null) {
-                    props[30] = "0";
-                }
+                //System.out.println(props[22]);
+                
                 System.out.println(props[30]);
                 String msiCon = props[22];
                 int indexIni = msiCon.indexOf("{");
@@ -79,6 +73,19 @@ public class AisService {
                 if(props[30].contains("\"second\"")){
                     trueHeading = props[29];
                 }
+                //
+                if (props[27] == null) {
+                    props[27] = "0";
+                }
+                System.out.println(props[27]);
+                if (props[28] == null) {
+                    props[28] = "0";
+                }
+                System.out.println(props[28]);
+                if (props[30] == null) {
+                    props[30] = "0";
+                }
+                
                 String barcoCompleto = "{"
                         + props[9] + ","
                         + msi + ","
@@ -89,7 +96,7 @@ public class AisService {
                 boat = gson.fromJson(barcoCompleto, Barco.class);
                 mapPoints.addWaypoint(boat);
                 
-                System.out.println(boat);
+                //System.out.println(boat);
                 in.close();
                 conn.disconnect();
             } catch (Exception e) {
