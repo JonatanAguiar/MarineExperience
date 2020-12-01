@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import marineExperience.model.Barco;
 import marineExperience.uteis.MapPoints;
 import org.apache.commons.io.IOUtils;
@@ -20,8 +22,7 @@ public class AisService {
     
     
     //requisição Post
-    public void Post_JSON(String message) {
-
+    public void Post_JSON(String message){
         new Thread(() -> {
             Barco boat = new Barco();
             String query_url = "http://ais.tbsalling.dk/decode";
@@ -103,6 +104,5 @@ public class AisService {
                 System.out.println(e);
             }
         }).start();
-
     }
 }

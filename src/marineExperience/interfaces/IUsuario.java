@@ -5,20 +5,15 @@
  */
 package marineExperience.interfaces;
 
-import java.util.List;
-import marineExperience.model.Usuario;
-
 /**
  *
  * @author jonat
+ * @param <T>
  */
-public interface IUsuario {
+public interface IUsuario<T> {
 
-    public void salvar(Usuario produto);
+    public void salvar(String nome, String senha);
     
-    public Usuario findUser(String nome, String senha);
-    
-    public List<Usuario> findAll();
+    public T findUser(String nome, String senha);
 
-    public void alterar(int id, String senha, String nome);
 }

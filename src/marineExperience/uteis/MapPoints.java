@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import marineExperience.model.Ais;
 import marineExperience.model.Barco;
 import marineExperience.service.AisService;
@@ -27,7 +28,7 @@ public class MapPoints {
     private MouseInputListener mia;
     private MapPrincipalView mpv;
     
-    public JXMapViewer RetornaPoints(List<Ais> aiss, MapPrincipalView mpv) {
+    public JXMapViewer RetornaPoints(List<Ais> aiss, MapPrincipalView mpv){
         this.mpv = mpv;
         File cacheDir = new File(System.getProperty("user.home") + File.separator + ".jxmapviewer2");
 
@@ -51,16 +52,11 @@ public class MapPoints {
             aisService.Post_JSON(aiss.get(i).getMsg());
         }
         
-//        aiss.forEach(x -> {
-//        });
-
-        // Add interacao de arrastar e zoom
         addInteracao();
-       
         return mapViewer;
     }
     
-    public void addWaypoint(Barco boat){
+    public void addWaypoint(Barco boat) throws InterruptedException{
         //na requisicao post, trago de volta barco a barco, add nas listas e seguindo o fluxo
         GeoPosition newPosition = new GeoPosition(boat.getLatitude(), boat.getLongitude());
         SwingWaypoint swp = new SwingWaypoint(boat.getMmsi(), boat.getTrueHeading(), boat.getRadioChannelCode(), newPosition);
@@ -70,11 +66,10 @@ public class MapPoints {
         // Add label no map viewer
         
         waypoints.forEach(w -> {
-            //System.out.println(w.getLabel());
             mapViewer.add(w.getLabel());
-            //this.mpv.iniciaMap(mapViewer);
         });
         //time
+        //parece que assim nao da certo -> TimeUnit.SECONDS.sleep(2);
         this.mpv.iniciaMap(mapViewer);
     }
     

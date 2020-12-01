@@ -6,8 +6,7 @@
 package marineExperience.view;
 
 import marineExperience.dao.DataSource;
-import marineExperience.dao.UsuarioDao;
-import marineExperience.model.Usuario;
+import marineExperience.dao.Dao;
 
 /**
  *
@@ -106,9 +105,8 @@ public class AddUserView extends javax.swing.JFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         DataSource dataSource = new DataSource();
-        UsuarioDao dao = new UsuarioDao(dataSource);
-        Usuario usuario = new Usuario(jTFNome.getText(), jPFSenha.getText());
-        dao.salvar(usuario);
+        Dao dao = new Dao(dataSource);
+        dao.salvar(jTFNome.getText(), jPFSenha.getText());
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCancelarActionPerformed

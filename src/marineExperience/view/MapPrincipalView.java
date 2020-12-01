@@ -8,7 +8,9 @@ package marineExperience.view;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
-import marineExperience.dao.AisDao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import marineExperience.dao.Dao;
 import marineExperience.dao.DataSource;
 import marineExperience.model.Ais;
 import marineExperience.uteis.MapPoints;
@@ -217,15 +219,13 @@ public class MapPrincipalView extends javax.swing.JFrame {
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
         DataSource dataSource = new DataSource();
-        AisDao dao = new AisDao(dataSource);
+        Dao dao = new Dao(dataSource);
         model.setNumRows(0);
-        System.out.println(dataI);
-        System.out.println(dataF);
-        
+       
         if(!jTFDataInicial.getText().equals("  /  /    ") && !jTFDataFinal.getText().equals("  /  /    ")){
             if(dataI.equals(jTFDataInicial.getText()) && dataF.equals(jTFDataFinal.getText())){
-                //JOptionPane.showMessageDialog(null, "Tente com datas diferentes!");
-                mapPoints.RetornaPoints(aiss,this);
+                JOptionPane.showMessageDialog(null, "Tente com datas diferentes!");
+                //mapPoints.RetornaPoints(aiss,this);
             }else{
                 dataI = jTFDataInicial.getText(); 
                 dataF = jTFDataFinal.getText();

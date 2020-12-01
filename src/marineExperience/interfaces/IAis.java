@@ -6,17 +6,12 @@
 package marineExperience.interfaces;
 
 import java.util.List;
-import marineExperience.model.Ais;
 
 /**
  *
  * @author jonat
+ * @param <T>
  */
-public interface IAis {
-
-    public Ais findUser(int id);
-    
-    //public List<Ais> findAll();
-    
-    public List<Ais> findByDate(String dataInicial, String dataFinal);
+public interface IAis<T> {
+    public List<T> findByDate(String dataInicial, String dataFinal);
 }

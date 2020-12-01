@@ -6,7 +6,7 @@
 package marineExperience.view;
 
 import marineExperience.dao.DataSource;
-import marineExperience.dao.UsuarioDao;
+import marineExperience.dao.Dao;
 import marineExperience.model.Usuario;
 import javax.swing.JOptionPane;
 /**
@@ -148,7 +148,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private void autenticacao(){
         DataSource dataSource = new DataSource();
-        UsuarioDao dao = new UsuarioDao(dataSource);
+        Dao dao = new Dao(dataSource);
         Usuario usuario = dao.findUser(jTFNome.getText(), jPFSenha.getText());
         if (usuario != null) {
             this.dispose();

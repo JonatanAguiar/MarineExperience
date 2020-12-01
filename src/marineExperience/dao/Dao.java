@@ -11,27 +11,30 @@ import java.sql.SQLException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import marineExperience.interfaces.IAis;
 import marineExperience.interfaces.IUsuario;
+import marineExperience.model.Ais;
 import marineExperience.model.Usuario;
 
 /**
  *
  * @author jonat
+ * @param <T>
  */
-public class UsuarioDao implements IUsuario{
+public class Dao<T> implements IUsuario, IAis{
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    public UsuarioDao(DataSource dataSource) {
+    public Dao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public void salvar(Usuario usuario) {
+    public void salvar(String nome, String senha) {
         String sql = "INSERT INTO USUARIO (NOME, SENHA) VALUES (?,md5(?))";
         try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pstm.setString(1, usuario.getNome());
-            pstm.setString(2, usuario.getSenha());
+            pstm.setString(1, nome);
+            pstm.setString(2, senha);
             pstm.execute();
             System.out.println("salvo com sucesso!");
         } catch (Exception e) {
@@ -61,33 +64,24 @@ public class UsuarioDao implements IUsuario{
     }
 
     @Override
-    public List<Usuario> findAll() {
-        List<Usuario> users = new ArrayList<>();
+    public List<T> findByDate(String dataInicial, String dataFinal) {
+        List<T> aiss = new ArrayList<>();
         try {
-            String sql = "SELECT id, Nome FROM USUARIO";
+            String sql = "SELECT * FROM Ais WHERE dt >= ? AND dt <= ? limit 20";
+
             try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql)) {
+                pstm.setString(1, dataInicial);
+                pstm.setString(2, dataFinal);
                 pstm.execute();
+                
                 try ( ResultSet rst = pstm.getResultSet()) {
                     while (rst.next()) {
-                        users.add(new Usuario(rst.getInt(1),rst.getString(2)));
+                        aiss.add((T) new Ais(rst.getInt(1),rst.getString(2),rst.getDate(3)));
                     }
                 }
             }
-            return users;
+            return aiss;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void alterar(int id, String senha, String nome) {
-        try ( PreparedStatement stm = dataSource.getConnection()
-                .prepareStatement("UPDATE USUARIO U SET U.SENHA = md5(?), U.Nome = ? WHERE id = ?")) {
-            stm.setString(1, senha);
-            stm.setString(2, nome);
-            stm.setInt(3, id);
-            stm.execute();
-        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
