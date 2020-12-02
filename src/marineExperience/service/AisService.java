@@ -77,18 +77,14 @@ public class AisService {
                 if(props[30].contains("\"second\"")){
                     trueHeading = props[29];
                 }
-                System.out.println(trueHeading);
-                
-                if (props[27] == null) {
-                    props[27] = "\"longitude\":0";
+                if (latidude.contains("null")) {
+                    return;
                 }
-                System.out.println(props[27]);
-                if (props[28] == null) {
-                    props[28] = "\"latitude\":0";
+                if (longitude.contains("null")) {
+                    return;
                 }
-                System.out.println(props[28]);
-                if (props[30] == null) {
-                    props[30] = "\"trueHeading\":0";
+                if (trueHeading.contains("null")) {
+                    return;
                 }
                 
                 String barcoCompleto = "{"
