@@ -40,6 +40,6 @@ public class Barco {
 
     @Override
     public String toString() {
-        return "canal: "+this.radioChannelCode+", MMSI: "+this.mmsi+", Lat: "+this.latitude+", Long: "+this.longitude+", dir: "+trueHeading;
+        return "Barco: canal: "+this.radioChannelCode+", MMSI: "+this.mmsi+", Lat: "+this.latitude+", Long: "+this.longitude+", dir: "+trueHeading;
     }
 }

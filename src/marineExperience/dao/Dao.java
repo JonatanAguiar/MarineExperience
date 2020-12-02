@@ -67,7 +67,7 @@ public class Dao<T> implements IUsuario, IAis{
     public List<T> findByDate(String dataInicial, String dataFinal) {
         List<T> aiss = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM Ais WHERE dt >= ? AND dt <= ? limit 20";
+            String sql = "SELECT * FROM Ais WHERE dt >= ? AND dt <= ?";
 
             try ( PreparedStatement pstm = dataSource.getConnection().prepareStatement(sql)) {
                 pstm.setString(1, dataInicial);
