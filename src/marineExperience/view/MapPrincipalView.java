@@ -225,7 +225,6 @@ public class MapPrincipalView extends javax.swing.JFrame {
         if(!jTFDataInicial.getText().equals("  /  /    ") && !jTFDataFinal.getText().equals("  /  /    ")){
             if(dataI.equals(jTFDataInicial.getText()) && dataF.equals(jTFDataFinal.getText())){
                 JOptionPane.showMessageDialog(null, "Tente com datas diferentes!");
-                //mapPoints.RetornaPoints(aiss,this);
             }else{
                 dataI = jTFDataInicial.getText(); 
                 dataF = jTFDataFinal.getText();

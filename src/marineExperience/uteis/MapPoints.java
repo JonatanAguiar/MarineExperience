@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import marineExperience.model.Ais;
 import marineExperience.model.Barco;
 import marineExperience.service.AisService;
@@ -46,11 +45,14 @@ public class MapPoints {
         GeoPosition litoral = new GeoPosition(-29.5, -49.4);
         mapViewer.setAddressLocation(litoral);
 
-        for (int i = 0; i < aiss.size(); i++) {
-            //chama requisicao a quantidade de vezes precisar
-            AisService aisService = new AisService(this);
-            aisService.Post_JSON(aiss.get(i).getMsg());
-        }
+        new Thread(() -> {
+            try {
+                AisService aisService = new AisService(this, aiss);
+                aisService.Post_JSON();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }).start();
         
         addInteracao();
         return mapViewer;
@@ -64,12 +66,7 @@ public class MapPoints {
         swingWaypointPainter.setWaypoints(waypoints);
         mapViewer.setOverlayPainter(swingWaypointPainter);
         // Add label no map viewer
-        
-        waypoints.forEach(w -> {
-            mapViewer.add(w.getLabel());
-        });
-        //time
-        //parece que assim nao da certo -> TimeUnit.SECONDS.sleep(2);
+        mapViewer.add(swp.getLabel());
         this.mpv.iniciaMap(mapViewer);
     }
     
