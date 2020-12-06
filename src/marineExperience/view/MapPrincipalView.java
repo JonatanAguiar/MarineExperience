@@ -8,8 +8,6 @@ package marineExperience.view;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import marineExperience.dao.Dao;
 import marineExperience.dao.DataSource;
 import marineExperience.model.Ais;
@@ -36,6 +34,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
 
     //metodo que atualiza o mapa
     public void iniciaMap(JXMapViewer mapViewer){
+        jLInicial.setVisible(false);
         this.setLayout(new BorderLayout());
         this.add(mapViewer);
         this.add(jp, BorderLayout.WEST);

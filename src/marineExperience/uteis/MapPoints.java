@@ -26,6 +26,7 @@ public class MapPoints {
     private final WaypointPainter<SwingWaypoint> swingWaypointPainter = new SwingWaypointOverlayPainter();
     private MouseInputListener mia;
     private MapPrincipalView mpv;
+    private int countInteracao = 0;
     
     public JXMapViewer RetornaPoints(List<Ais> aiss, MapPrincipalView mpv){
         this.mpv = mpv;
@@ -54,7 +55,10 @@ public class MapPoints {
             }
         }).start();
         
-        addInteracao();
+        countInteracao++;
+        if(countInteracao == 1){
+            addInteracao();
+        }
         return mapViewer;
     }
     
