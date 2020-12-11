@@ -24,9 +24,11 @@ import org.jxmapviewer.JXMapViewer;
 public class MapPrincipalView extends javax.swing.JFrame {
     private DefaultTableModel model;
     private List<Ais> aiss = new ArrayList<>();
+    JXMapViewer mapViewer = new JXMapViewer();
     private final MapPoints mapPoints = new MapPoints();
     private String dataI="  /  /    "; 
     private String dataF="  /  /    ";
+    private boolean quandolimpar=false;
     
     public MapPrincipalView(){
         initComponents();
@@ -128,7 +130,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jTFDataFinal.setText("26/07/2019");
+        jTFDataFinal.setText("31/07/2019");
         jTFDataFinal.setToolTipText("Informe a data final");
 
         jBLimpar.setText("Limpar");
@@ -225,6 +227,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
             if(dataI.equals(jTFDataInicial.getText()) && dataF.equals(jTFDataFinal.getText())){
                 JOptionPane.showMessageDialog(null, "Tente com datas diferentes!");
             }else{
+                
                 dataI = jTFDataInicial.getText(); 
                 dataF = jTFDataFinal.getText();
                 String[] data = dataI.split("/");
@@ -236,7 +239,15 @@ public class MapPrincipalView extends javax.swing.JFrame {
                 for (int x = 0; x < aiss.size(); x++) { //add na tabela os dados
                     model.addRow(new Object[]{aiss.get(x).getId(), aiss.get(x).getMsg(), aiss.get(x).getData()});
                 }
-                mapPoints.RetornaPoints(aiss,this);
+                mapViewer.removeAll();
+                if(quandolimpar==false){
+                    mapViewer = mapPoints.RetornaPoints(aiss,this);
+                    quandolimpar=true;
+                }else{
+                    mapViewer.removeAll();
+                    mapViewer = mapPoints.RetornaPoints(aiss,this);
+                    quandolimpar=false;
+                }
             }
         }else{
             JOptionPane.showMessageDialog(null, "Informe um intervalo de datas");
