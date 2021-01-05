@@ -1,4 +1,5 @@
 /*
+ * Desenvolvido por: Jonatan Aguiar - m107334 e Lucas Altmann - m110021
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -122,7 +123,6 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jTFDataInicial.setText("24/07/2019");
         jTFDataInicial.setToolTipText("Informe a data inicial");
 
         try {
@@ -130,7 +130,6 @@ public class MapPrincipalView extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jTFDataFinal.setText("31/07/2019");
         jTFDataFinal.setToolTipText("Informe a data final");
 
         jBLimpar.setText("Limpar");
@@ -216,6 +215,7 @@ public class MapPrincipalView extends javax.swing.JFrame {
         jTFDataInicial.setText("");
         jTFDataFinal.setText("");
         model.setNumRows(0);
+        mapViewer.removeAll();
     }//GEN-LAST:event_jBLimparActionPerformed
 
     private void jBBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBuscarActionPerformed
